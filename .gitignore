@@ -1,3 +1,9 @@
+# Extras
+dataset
+outputs
+aml_config
+.vscode
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
