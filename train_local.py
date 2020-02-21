@@ -9,7 +9,6 @@ import os
 data_path = '/temp'
 os.makedirs('./outputs', exist_ok=True)
 
-
 print('fetching MNIST data...')
 mnist = fetch_openml('mnist_784')
 mnist['target'] = np.array([int(x) for x in mnist['target']])
