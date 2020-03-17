@@ -18,6 +18,8 @@ n = 20000
 shuffle_index = np.random.permutation(70000)[:n]
 X, y = mnist['data'][shuffle_index], mnist['target'][shuffle_index]
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 42)
+
 # plot some digits
 import matplotlib.pyplot as plt 
 
@@ -26,8 +28,6 @@ for i in range(15):
     ax[i].imshow(X_train[i].reshape(28,28))
 plt.show()
 
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.3, random_state = 42)
 
 lr = LogisticRegression()
 print("training a logistic regression model...")

@@ -5,11 +5,11 @@ from sklearn.metrics import confusion_matrix
 
 import numpy as np
 import os
-from azureml.core.run import Run
 data_path = '/temp'
 os.makedirs('./outputs', exist_ok=True)
 
 try:    
+    from azureml.core.run import Run
     run = Run.get_submitted_run()
 except:
     run = None
