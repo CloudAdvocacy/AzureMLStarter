@@ -23,6 +23,60 @@ az group create -n myazml -l westus2
 az ml workspace create -w myworkspace -g myazml
 ```
 
+## Using AutoML
+
+AutoML is a service to automatically calculate the best possible algorithm that gives best results for the given set of data. It tries different combinations of algorithms from SkLearn on the data in turn, using scalable cluster resources.
+
+1. Select **Automated ML** in the ML Portal menu.
+2. Chose **New Automated ML Run**
+3. In the **Select dataset** part, chose **Create Dataset -> From Open Datasets**
+4. Type **MNIST** in the search box, select the dataset and click **Next**.
+5. Name the dataset **MNIST**, leave all options intact and click **Create**.
+6. Chose the dataset on Automated ML dialog and click **Next**
+7. Enter the experiment name
+8. For target column, select *Column 785*
+9. For the compute cluster, chose the cluster you have created earlier. Click **Next**
+10. Select **Classification** task type. Observe settings that are available under *View additional configuration settings* and *View featurization settings*.
+11. When you are ready -- click **Finish**. 
+12. Go to **Experiments** tab and explore the results. Automated ML takes a very long time to run through all algorithms, but you can see intermediate results.
+13. On the experiment results, select **Include child runs** to see the results of all experiments.
+
+![AutoML](images/AzMLAutoMLChildRuns.PNG)
+
+14. Unselect **Include child runs**, click on one of the runs that took most time to execute, and select **Models** tab to observe the accuracy of individual models.
+
+![AutoML](images/AzMLAutoMLModels.PNG)
+
+## Training Titanic Prediction Model using AutoML
+
+1. Define Titanic Dataset:
+   - Select "Tabular" as dataset type
+   - Use "from the web", and specify the URL to the `titanic.csv` file in this repository
+1. Explore the dataset and see which fields are available.
+1. Create new AutoML Experiment with Titanic dataset
+   - Select "Classification" as experiment type
+   - Select "Featurization options" and leave only relevant fields. Also, you may specify field types (although AutoML does a good job figuring those out automatically)
+   - Look at the other options available
+   - You may select to use Deep Learning models as well
+1. Submit the experiment and wait for it to complete
+1. Look at the results and find the model with highest accuracy
+1. You may also try to look at the interpretability of the best model and see which were the most significant features.
+
+## Using Azure ML Designer
+
+Azure ML designer is supposed to be a simple UI tool to create and run complex Azure ML pipelines (multi-step experiments).
+
+![Azure ML Designer](images/AzMLDesigner.PNG)
+
+1. Select the **Designer** tab on the left-hand-side menu on the ML Portal.
+2. Create a new experiment using *Sample 12: Multi-Class Classification - Letter Recognition* 
+3. Examine the way experiment is composed.
+4. Run the experiment.
+5. Monitor the results be chosing the last rectangle *Evaluate* and clicking view button on the *Outputs* tab.
+
+![Azure ML Designer](images/AzMLDesignerRes.PNG)
+
+
 ## Using Azure ML From Visual Studio Code
 
 #### Prerequisites 
@@ -75,7 +129,8 @@ Now let's learn how to submit scripts programmatically through Python code, and 
     - Start a local jupyter notebook in the current directory: `jupyter notebook`
     - Upload `submit.ipynb`, `config.json` and `datasets` folder to [Azure Notebooks](http://aka.ms/aznb)
     - Create a notebook in your Azure ML Workspace (in this case you would also have to create a VM to run it on) and upload all data there.
-4. Go through all the steps in `submit.py` notebook:
+    - Open this repository in [GitHub Codespaces](https://github.com/features/codespaces)
+4. Go through all the steps in `submit.ipynb` notebook:
     - Create a reference to ML workspace
     - Create a reference to compute resource
     - Upload data to the ML workspace
@@ -84,45 +139,17 @@ Now let's learn how to submit scripts programmatically through Python code, and 
     - Select and register the best model
 5. After best model registration, you should see the model on the ML Portal under **Models** tab. Play with the options and see that you can deploy the model from the UI either as Azure Container Instance (**ACI**), or on Kubernetes cluster (**AKS**). You will need to supply the scoring Python script for that.
 
-## Using Azure ML Designer
+## Train GAN Model to produce paintings
 
-Azure ML designer is supposed to be a simple UI tool to create and run complex Azure ML pipelines (multi-step experiments).
+You can read in more detail about GAN Training [in my blog post](https://soshnikov.com/scienceart/creating-generative-art-using-gan-on-azureml/).
 
-![Azure ML Designer](images/AzMLDesigner.PNG)
+<img src="images/Flo1.jpg" width="200" height="200"/>
 
-1. Select the **Designer** tab on the left-hand-side menu on the ML Portal.
-2. Create a new experiment using *Sample 12: Multi-Class Classification - Letter Recognition* 
-3. Examine the way experiment is composed.
-4. Run the experiment.
-5. Monitor the results be chosing the last rectangle *Evaluate* and clicking view button on the *Outputs* tab.
+You can train the model on a number of paintings. Image above was trained on around 1000 images from [WikiArt][WikiArt], which you would need to collect yourself, for example by using [WikiArt Retriever](https://github.com/lucasdavid/wikiart), or borrowing existing collections from [WikiArt Dataset](https://github.com/cs-chan/ArtGAN/blob/master/WikiArt%20Dataset/README.md) or [GANGogh Project][GANGogh].
 
-![Azure ML Designer](images/AzMLDesignerRes.PNG)
+Place images you want to train on somewhere in `dataset` directory. After that, follow instructions in `submit_gan.ipynb` notebook.
 
-## Using AutoML
-
-AutoML is a service to automatically calculate the best possible algorithm that gives best results for the given set of data. It tries different combinations of algorithms from SkLearn on the data in turn, using scalable cluster resources.
-
-1. Select **Automated ML** in the ML Portal menu.
-2. Chose **New Automated ML Run**
-3. In the **Select dataset** part, chose **Create Dataset -> From Open Datasets**
-4. Type **MNIST** in the search box, select the dataset and click **Next**.
-5. Name the dataset **MNIST**, leave all options intact and click **Create**.
-6. Chose the dataset on Automated ML dialog and click **Next**
-7. Enter the experiment name
-8. For target column, select *Column 785*
-9. For the compute cluster, chose the cluster you have created earlier. Click **Next**
-10. Select **Classification** task type. Observe settings that are available under *View additional configuration settings* and *View featurization settings*.
-11. When you are ready -- click **Finish**. 
-12. Go to **Experiments** tab and explore the results. Automated ML takes a very long time to run through all algorithms, but you can see intermediate results.
-13. On the experiment results, select **Include child runs** to see the results of all experiments.
-
-![AutoML](images/AzMLAutoMLChildRuns.PNG)
-
-14. Unselect **Include child runs**, click on one of the runs that took most time to execute, and select **Models** tab to observe the accuracy of individual models.
-
-![AutoML](images/AzMLAutoMLModels.PNG)
-
-### Cleaning up
+## Cleaning up
 
 Because using Azure ML is resource-intensive, if you are using your own Azure subscription, it is recommended to:
 
@@ -137,3 +164,6 @@ az group delete -n myazml
 Have fun!
 
 -- [Dmitry Soshnikov](http://soshnikov.com)
+
+[WikiArt]: https://www.wikiart.org/
+[GANGogh]: https://github.com/rkjones4/GANGogh
