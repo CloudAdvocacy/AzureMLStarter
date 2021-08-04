@@ -120,15 +120,15 @@ if run is not None:
 
 7. To run an experiment inside Azure ML Workspace, we need to create **compute**. **Compute** defines a computing resource which is used for training/inference. You can use your local machine, or any cloud resources. In our case, we will use AmlCompute cluster. Please create a scalable cluster of STANDARD_DS3_v2 machines, with min=0 and max=4 nodes. There are several ways to create the cluster:
    * Through web interface in [Azure ML Portal](http://ml.azure.com/?WT.mc_id=ca-github-dmitryso). Go to **Compute** section, and add new **Compute Cluster**. We suggest you follow this path if you are doing it for the first time.     
+   * From VS Code Azure ML extension blade, go the workspace, look for **Compute** section, and click on `+` to the right of **Compute clusters** section. This will open YAML file, in which you can define the configuration of your cluster, and then submit it from VS Code environment. 
    * Through Azure CLI command:
 ```bash
 az ml compute create -n AzMLCompute --type amlcompute --min-instances 0 --max-instances 4 
 ```
-   * From VS Code Azure ML extension blade, go the workspace, look for **Compute** section, and click on `+` to the right of **Compute clusters** section. This will open YAML file, in which you can define the configuration of your cluster, and then submit it from VS Code environment. 
   
-7. To submit `train_universal.py` to Azure ML once the cluster has been created, we need to create YAML description file. This can be done by right-clicking on `train_universal.py` file in VS Code, and selecting **Azure ML - Create Job**. This will open the editor with pre-populated YAML file, 
+8. To submit `train_universal.py` to Azure ML once the cluster has been created, we need to create YAML description file. This can be done by right-clicking on `train_universal.py` file in VS Code, and selecting **Azure ML - Create Job**. This will open the editor with pre-populated YAML file, 
 
-8. In the YAML file, you can press **Ctrl-Space** in many places to initiate auto-complete. The file defines:
+9. In the YAML file, you can press **Ctrl-Space** in many places to initiate auto-complete. The file defines:
     - **Script** that needs to be run
     - **Environment**, which is essentially a container that is created to perform training on a remote resource. Clicking Ctrl-Space gives you the list of predefined environments. You can also define your own, based on starting container and conda/pip environment specification. 
 
@@ -143,13 +143,13 @@ compute:
   target: azureml:AzMLCompute
 ```
 
-9. To submit this job to Azure ML, the easiest way is to click on the Azure ML icon in the top right corner of the YAML file editing screen. Once you have the YAML file, you can also submit it from command-line:
+10. To submit this job to Azure ML, the easiest way is to click on the Azure ML icon in the top right corner of the YAML file editing screen. Once you have the YAML file, you can also submit it from command-line:
 
 ```bash
 az ml job create -f submit-universal.yml`
 ```
 
-10. One the job has been submitted, logs would be automatically streamed to VS Code terminal window. You can also observe the results in [Azure ML Portal](http://ml.azure.com/?WT.mc_id=ca-github-dmitryso). Please note that the run may take several minutes to complete. 
+11. One the job has been submitted, logs would be automatically streamed to VS Code terminal window. You can also observe the results in [Azure ML Portal](http://ml.azure.com/?WT.mc_id=ca-github-dmitryso). Please note that the run may take several minutes to complete. 
 
 You now know that submitting runs to Azure ML is not complicated, and you get some goodies (like storing all statistics from your runs, models, etc.) for free.
 
@@ -205,18 +205,14 @@ You can also define **early termination** criteria, e.g. when metrics is not ris
 
 Once you submit such an experiment, Azure ML automatically schedules a bunch of experiment runs, and offers you a convenient choice of visualizations to select the best model at the end:
 
-![Hyperparameters](images/AzMLHyperparam.png) 
+![Hyperparameters](images/AzMLHyperParam.png) 
 ## Experiment Submission and Hyperparameter Optimization through Python SDK
 
 Now let's learn how to submit scripts programmatically through Python code, and how to do hyperparameter optimization:
 
 1. Create small MNIST dataset for our experiments by running `create_dataset.ipynb` locally. It will create `dataset` subdirectory.
 2. Download `config.json` file from your Azure Portal, which contains all credentials for accessing the Workspace, and place it in the current directory, or where your Jupyter notebook is.
-3. Open `submit.ipynb` file in Jupyter Notebook. You can either:
-    - Start a local jupyter notebook in the current directory: `jupyter notebook`
-    - Upload `submit.ipynb`, `config.json` and `datasets` folder to [Azure Notebooks](http://aka.ms/aznb)
-    - Create a notebook in your Azure ML Workspace (in this case you would also have to create a VM to run it on) and upload all data there.
-    - Open this repository in [GitHub Codespaces](https://github.com/features/codespaces)
+3. Open `submit.ipynb` file in Jupyter Notebook. The easiest way would be to open in in VS Code, but you can also create a notebook in your Azure ML Workspace (in this case you would also have to create a VM to run it on) and upload all data there.
 4. Go through all the steps in `submit.ipynb` notebook:
     - Create a reference to ML workspace
     - Create a reference to compute resource
@@ -250,6 +246,14 @@ Because using Azure ML is resource-intensive, if you are using your own Azure su
 az ml workspace delete --w myworkspace -g myazml
 az group delete -n myazml
 ```
+
+## Further Resources
+
+* [Azure ML using CLI documentation])(https://docs.microsoft.com/azure/machine-learning/how-to-train-cli/?WT.mc_id=ca-github-dmitryso)
+* [Azure ML via VS Code documentation](https://docs.microsoft.com/en-us/azure/machine-learning/tutorial-train-deploy-image-classification-model-vscode/?WT.mc_id=ca-github-dmitryso)
+* [Azure ML Examples](https://github.com/Azure/azureml-examples/) - a repository containing a lot of Azure ML examples, both using CLI, and Python SDK
+* [Series of blog posts on Azure ML](https://soshnikov.com/azure/using-azureml-for-hyperparameter-optimization/) - slightly outdated, but they cover some concepts.
+* [Getting FREE Azure](https://azure-for-academics.github.io/getting-azure/) - for [Students](http://aka.ms/az4stud), and for [the rest of us](http://aka.ms/azfree)
 
 Have fun!
 
