@@ -1,0 +1,35 @@
+$schema: https://azuremlschemas.azureedge.net/latest/sweepJob.schema.json
+experiment_name: keras-sweep
+algorithm: random
+type: sweep_job
+search_space:
+  batch_size:
+    type: choice
+    values: [32,64]
+  hidden:
+    type: choice
+    values: [10,50,100,300]
+  dropout:
+    type: uniform
+    min_value: 0.1
+    max_value: 0.5
+objective:
+  primary_metric: Accuracy
+  goal: maximize
+trial:
+  command: python train_keras.py --data_path {inputs.mnist} --batch_size {search_space.batch_size} --hidden {search_space.hidden} --dropout {search_space.dropout}
+  code:
+    local_path: train_keras.py
+  # invoke completions (Ctrl+Space, Cmd+Space) to see the list of environments available
+  environment: azureml:AzureML-TensorFlow-2.3-CPU:20
+  compute:
+    # invoke completions (Ctrl+Space, Cmd+Space) to see the list of compute targets available
+    target: azureml:AzMLCompute
+  inputs:
+      mnist:
+        data:
+          local_path: d:\WORK\AzureMLStarter\dataset\mnist.pkl
+        mode: mount
+max_total_trials: 10
+max_concurrent_trials: 2
+timeout_minutes: 120

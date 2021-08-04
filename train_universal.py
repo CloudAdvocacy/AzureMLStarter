@@ -10,13 +10,15 @@ os.makedirs('./outputs', exist_ok=True)
 
 try:    
     from azureml.core.run import Run
-    run = Run.get_submitted_run()
+    run = Run.get_context()
 except:
     run = None
 
 print('fetching MNIST data...')
-mnist = fetch_openml('mnist_784')
+mnist = fetch_openml('mnist_784',as_frame=False)
 mnist['target'] = np.array([int(x) for x in mnist['target']])
+
+print(mnist)
 
 # use a random subset of n records to reduce training time.
 n = 20000

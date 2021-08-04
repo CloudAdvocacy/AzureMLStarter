@@ -10,7 +10,7 @@ data_path = '/temp'
 os.makedirs('./outputs', exist_ok=True)
 
 print('fetching MNIST data...')
-mnist = fetch_openml('mnist_784')
+mnist = fetch_openml('mnist_784',as_frame=False)
 mnist['target'] = np.array([int(x) for x in mnist['target']])
 
 # use a random subset of n records to reduce training time.

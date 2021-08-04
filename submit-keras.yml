@@ -1,0 +1,20 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+experiment_name: KerasExperiment
+code:
+  local_path: d:\WORK\AzureMLStarter
+command: python train_keras.py --data_path {inputs.mnist}
+# invoke completions (Ctrl+Space, Cmd+Space) to see the list of environments available
+environment: azureml:AzureML-TensorFlow-2.3-CPU:20
+compute:
+  # invoke completions (Ctrl+Space, Cmd+Space) to see the list of computes available
+  target: AzMLCompute
+# This defines the input datasets to mount. The names of the items in inputs can be referenced in the command
+inputs:
+  mnist:
+    mode: mount
+    data:
+      local_path: d:\WORK\AzureMLStarter\dataset\mnist.pkl 
+      #local_path: <path-to-your-local-training-data>
+      # or 
+      # path: <url-to-blob-container-with-data>
+      

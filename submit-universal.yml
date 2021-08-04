@@ -1,0 +1,10 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code:
+  local_path: d:\WORK\AzureMLStarter
+command: python train_universal.py
+# invoke completions (Ctrl+Space, Cmd+Space) to see the list of environments available
+environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:4
+compute:
+  # invoke completions (Ctrl+Space, Cmd+Space) to see the list of computes available
+  target: azureml:AzMLCompute
+

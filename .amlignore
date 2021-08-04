@@ -10,3 +10,5 @@ azureml-logs
 outputs
 azureml-setup
 docs
+dataset
+images
