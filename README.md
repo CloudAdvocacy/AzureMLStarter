@@ -53,7 +53,7 @@ AutoML is a service to automatically calculate the best possible algorithm that 
 
 1. Define Titanic Dataset:
    - Select "Tabular" as dataset type
-   - Use "from the web", and specify the URL to the `titanic.csv` file in this repository
+   - Use "from the web", and specify the URL to the `titanic.csv` file in this repository ([this one](https://raw.githubusercontent.com/CloudAdvocacy/AzureMLStarter/master/data/titanic.csv))
 1. Explore the dataset and see which fields are available.
 1. Create new AutoML Experiment with Titanic dataset
    - Select "Classification" as experiment type
@@ -249,7 +249,7 @@ az group delete -n myazml
 
 ## Further Resources
 
-* [Azure ML using CLI documentation])(https://docs.microsoft.com/azure/machine-learning/how-to-train-cli/?WT.mc_id=ca-github-dmitryso)
+* [Azure ML using CLI documentation](https://docs.microsoft.com/azure/machine-learning/how-to-train-cli/?WT.mc_id=ca-github-dmitryso)
 * [Azure ML via VS Code documentation](https://docs.microsoft.com/en-us/azure/machine-learning/tutorial-train-deploy-image-classification-model-vscode/?WT.mc_id=ca-github-dmitryso)
 * [Azure ML Examples](https://github.com/Azure/azureml-examples/) - a repository containing a lot of Azure ML examples, both using CLI, and Python SDK
 * [Series of blog posts on Azure ML](https://soshnikov.com/azure/using-azureml-for-hyperparameter-optimization/) - slightly outdated, but they cover some concepts.
